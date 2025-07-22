@@ -6,6 +6,15 @@ import reactPlugin from 'eslint-plugin-react';
 import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
+  /* ------------- files ESLint should ignore ------------ */
+  {
+    ignores: [
+      'node_modules/**',
+      '.husky/**',
+      'commitlint.config.cjs',
+      // add any other paths you had in .eslintignore
+    ],
+  },
   /* ------------- base JS rules ------------- */
   {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
