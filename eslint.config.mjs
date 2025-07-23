@@ -1,24 +1,40 @@
 // eslint.config.mjs
 import js from "@eslint/js";
 import globals from "globals";
-import tsPlugin from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
+import tseslint from "typescript-eslint"; // gives us parser + plugin presets
 import reactPlugin from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
   /* ---------- ignore patterns (no .eslintignore in v9) ---------- */
   {
-    ignores: ["node_modules/**", ".husky/**", "commitlint.config.cjs"],
+    ignores: [
+      "node_modules/**",
+      ".husky/**",
+      "commitlint.config.cjs",
+      "dist/**", // added from the .js file
+    ],
   },
 
-  /* ---------- base JS rules (spread, not extends) --------------- */
+  /* ---------- base JS rules ------------------------------------- */
   js.configs.recommended,
 
-  /* ---------- browser globals ----------------------------------- */
+  /* ---------- TypeScript (parser + rules) ----------------------- */
+  tseslint.configs.recommended,
+
+  /* ---------- React Hooks & React-Refresh ----------------------- */
+  reactHooks.configs["recommended-latest"],
+  reactRefresh.configs.vite,
+
+  /* ---------- browser globals / modern ECMAScript -------------- */
   {
     files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
-    languageOptions: { globals: globals.browser },
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
   },
 
   /* ---------- Node/tooling files -------------------------------- */
@@ -27,15 +43,7 @@ export default defineConfig([
     languageOptions: { globals: globals.node },
   },
 
-  /* ---------- TypeScript ---------------------------------------- */
-  {
-    files: ["**/*.{ts,tsx,mts,cts}"],
-    languageOptions: { parser: tsParser },
-    plugins: { "@typescript-eslint": tsPlugin },
-    rules: tsPlugin.configs.recommended.rules,
-  },
-
-  /* ---------- React --------------------------------------------- */
+  /* ---------- React core rules ---------------------------------- */
   {
     plugins: { react: reactPlugin },
     settings: { react: { version: "detect" } },
