@@ -1,7 +1,7 @@
 // eslint.config.mjs
 import js from "@eslint/js";
 import globals from "globals";
-import tseslint from "typescript-eslint"; // gives us parser + plugin presets
+import tseslint from "typescript-eslint";
 import reactPlugin from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
@@ -14,7 +14,7 @@ export default defineConfig([
       "node_modules/**",
       ".husky/**",
       "commitlint.config.cjs",
-      "dist/**", // added from the .js file
+      "dist/**",
     ],
   },
 
@@ -49,4 +49,6 @@ export default defineConfig([
     settings: { react: { version: "detect" } },
     rules: reactPlugin.configs.flat.recommended.rules,
   },
+
+  reactPlugin.configs.flat["jsx-runtime"],
 ]);
