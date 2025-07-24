@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Needle } from "./Needle";
 
 export interface SpectrumSettings {
   barCount: number;
@@ -183,18 +184,7 @@ export const SpectrumVisualizer: React.FC<SpectrumVisualizerProps> = ({
     gap: "10px",
     position: "relative",
   };
-  const overlayStyle: React.CSSProperties = {
-    position: "absolute",
-    top: 20,
-    left: "50%",
-    transform: "translateX(-50%)",
-    color: "#00ccff",
-    fontSize: "1.8rem",
-    background: "rgba(0,0,0,0.6)",
-    padding: "0.5rem 1rem",
-    borderRadius: 8,
-    pointerEvents: "none",
-  };
+
   const barWidth = `${100 / barCount}%`;
   const pillHeight = `${100 / pillCount}%`;
 
@@ -208,9 +198,6 @@ export const SpectrumVisualizer: React.FC<SpectrumVisualizerProps> = ({
 
   return (
     <div style={wrapperStyle}>
-      {detectedFreq !== null && (
-        <div style={overlayStyle}>{detectedFreq.toFixed(1)} Hz</div>
-      )}
       <div style={containerStyle}>
         {levels.map((barLevels, i) => (
           <div
@@ -240,6 +227,7 @@ export const SpectrumVisualizer: React.FC<SpectrumVisualizerProps> = ({
           </div>
         ))}
       </div>
+      <Needle measuredHz={detectedFreq ?? 0} />
     </div>
   );
 };
