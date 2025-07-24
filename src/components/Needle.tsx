@@ -44,7 +44,7 @@ const midiToName = (midi: number): string => {
 
 export const Needle: React.FC<NeedleProps> = ({
   measuredHz,
-  width = "30vw",
+  width = "clamp(300px, 30vw, 450px)",
   maxCents = 50,
   maxAngle = 60,
 }) => {
@@ -88,68 +88,70 @@ export const Needle: React.FC<NeedleProps> = ({
 
   return (
     <div style={overlayStyle}>
-      <svg
-        viewBox={`0 0 ${viewWidth} ${totalHeight}`}
-        width={width}
-        style={{ display: "block" }}
-      >
-        {/* semi‑circle arc */}
-        <path
-          d={`M 5,${cy} A ${radius - 2},${radius + 5} 0 0,1 ${viewWidth - 5},${cy}`}
-          stroke="#FFF"
-          strokeWidth={10}
-          fill="none"
-        />
-
-        {/* rotating needle group */}
-        <g transform={`rotate(${angle}, ${cx}, ${cy})`}>
-          {/* knob */}
-          <circle
-            cx={cx}
-            cy={cy}
-            r={knobRadius}
-            fill="#fff"
-            stroke="#333"
-            strokeWidth={1}
-          />
-          {/* pointer with rounded tip */}
-          <path
-            d={
-              `M ${cx - baseWidth / 2},${baseY} ` +
-              `L ${cx - tipRadius},${tipY + tipRadius} ` +
-              `A ${tipRadius},${tipRadius} 0 0,1 ${cx + tipRadius},${tipY + tipRadius} ` +
-              `L ${cx + baseWidth / 2},${baseY} Z`
-            }
-            fill="#fff"
-          />
-        </g>
-
-        {/* detected note label */}
-        <text
-          x={cx}
-          y={totalHeight - 30}
-          textAnchor="middle"
-          fontSize={45}
-          fontFamily="sans-serif"
-          fontWeight="bold"
-          fill="#FFF"
+      <div style={{ width, maxWidth: "100%" }}>
+        <svg
+          viewBox={`0 0 ${viewWidth} ${totalHeight}`}
+          width={width}
+          style={{ display: "block" }}
         >
-          {targetNoteName}
-        </text>
-        {measuredHz > 0 && (
+          {/* semi‑circle arc */}
+          <path
+            d={`M 5,${cy} A ${radius - 2},${radius + 5} 0 0,1 ${viewWidth - 5},${cy}`}
+            stroke="#FFF"
+            strokeWidth={10}
+            fill="none"
+          />
+
+          {/* rotating needle group */}
+          <g transform={`rotate(${angle}, ${cx}, ${cy})`}>
+            {/* knob */}
+            <circle
+              cx={cx}
+              cy={cy}
+              r={knobRadius}
+              fill="#fff"
+              stroke="#333"
+              strokeWidth={1}
+            />
+            {/* pointer with rounded tip */}
+            <path
+              d={
+                `M ${cx - baseWidth / 2},${baseY} ` +
+                `L ${cx - tipRadius},${tipY + tipRadius} ` +
+                `A ${tipRadius},${tipRadius} 0 0,1 ${cx + tipRadius},${tipY + tipRadius} ` +
+                `L ${cx + baseWidth / 2},${baseY} Z`
+              }
+              fill="#fff"
+            />
+          </g>
+
+          {/* detected note label */}
           <text
             x={cx}
-            y={totalHeight}
+            y={totalHeight - 30}
             textAnchor="middle"
-            fontSize={15}
+            fontSize={45}
             fontFamily="sans-serif"
             fontWeight="bold"
             fill="#FFF"
           >
-            {measuredHz.toFixed(1) + " Hz"}
+            {targetNoteName}
           </text>
-        )}
-      </svg>
+          {measuredHz > 0 && (
+            <text
+              x={cx}
+              y={totalHeight}
+              textAnchor="middle"
+              fontSize={15}
+              fontFamily="sans-serif"
+              fontWeight="bold"
+              fill="#FFF"
+            >
+              {measuredHz.toFixed(1) + " Hz"}
+            </text>
+          )}
+        </svg>
+      </div>
     </div>
   );
 };
