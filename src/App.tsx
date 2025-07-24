@@ -1,7 +1,17 @@
+import {
+  SpectrumVisualizer,
+  type SpectrumSettings,
+} from "./components/SpectrumVisualizer";
+
 function App() {
+  const settings: SpectrumSettings = {
+    barCount: 12,
+    pillCount: 40,
+  };
+
   return (
     <>
-      <h1>Vite + React</h1>
+      <SpectrumVisualizer settings={settings} />;
     </>
   );
 }
